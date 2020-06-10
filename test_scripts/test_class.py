@@ -82,9 +82,10 @@ class Test():
         Not yet, working on it.
     """
     
-    def __init__(self):
-        self.dir = 'test_obj'
-
+    def __init__(self, directory='test_obj'):
+                
+        self.directory=directory
+        
         self.obj_tests_dict = {
             np.ndarray: np.testing.assert_array_equal,
             pd.core.series.Series: pd.testing.assert_series_equal,
@@ -106,9 +107,8 @@ class Test():
         check if test_obj dir is there; if not, create it
         '''
 
-        dir_list = os.listdir()
-        if self.dir not in dir_list:
-            os.mkdir(self.dir)
+        if not os.path.isdir(self.directory):
+            os.mkdir(self.directory)
 
         return
 
@@ -123,19 +123,11 @@ class Test():
             str of file name w/o .pkl extension
         '''
 
-        try:
-            listing = (glob_listing
-                       .split('/')[1]  # get the file name
-                       .split('.')[0]  # remove .pkl
-                       )
-
-        except:
-            listing = (
-                glob_listing
-                .split('\\')[1]  # get the file name
-                .split('.')[0]  # remove .pkl
-            )
-
+        #get filename
+        directory, file_name = os.path.split(glob_listing)
+        
+        # remove .pkl
+        listing, file_extension = os.path.splitext(file_name)
         return listing
 
     def save_ind(self, object, object_name):
@@ -146,7 +138,8 @@ class Test():
             object: object to pkl
             object_name: pkl file name
         '''
-        with open(f'{self.dir}/{object_name}.pkl', 'wb') as f:
+        
+        with open(os.path.join(self.directory, f'{object_name}.pkl'), 'wb') as f:
             pkl.dump(object, f)
 
         return
@@ -165,12 +158,20 @@ class Test():
         '''
         self.test_dir()
 
-        files = glob.glob(f'{self.dir}/*.pkl')
+        files = glob.glob(
+            os.path.join(
+                self.directory, f'{object_name}.pkl'
+            )
+        )
 
         existing_files = [self.get_file_name(file) for file in files]
 
         if object_name+'.pkl' in existing_files:
-            os.remove(f"{self.dir}/{object_name+'.pkl'}")
+            os.remove(
+                os.path.join(
+                    self.directory, f'{object_name}.pkl'
+                )
+            )
 
         self.save_ind(object, object_name)
 
@@ -183,7 +184,7 @@ class Test():
         returns: unpkl'd object
         '''
 
-        with open(f'{self.dir}/{object_name}.pkl', 'rb') as f:
+        with open(os.path.join(self.directory, f'{object_name}.pkl'), 'rb') as f:
             obj = pkl.load(f)
 
         return obj
