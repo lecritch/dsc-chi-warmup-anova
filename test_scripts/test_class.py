@@ -1,5 +1,6 @@
 import os
 import glob
+import types
 
 import pickle as pkl
 
@@ -80,20 +81,22 @@ class Test():
         ---------------------------------------------------
         Not yet, working on it.
     """
-
+    
     def __init__(self):
         self.dir = 'test_obj'
 
         self.obj_tests_dict = {
             np.ndarray: np.testing.assert_array_equal,
             pd.core.series.Series: pd.testing.assert_series_equal,
-            pd.core.frame.DataFrame: pd.testing.assert_frame_equal
+            pd.core.frame.DataFrame: pd.testing.assert_frame_equal,
+            types.MethodType: lambda x, y: x.__code__.co_code == y.__code__.co_code
         }
 
         self.obj_tests_dict_kwargs = {
             np.ndarray: {},
             pd.core.series.Series: {},
-            pd.core.frame.DataFrame: {'check_like': True}
+            pd.core.frame.DataFrame: {'check_like': True},
+            types.MethodType: {}
         }
 
         return
