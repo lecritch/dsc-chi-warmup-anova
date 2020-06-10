@@ -27,6 +27,8 @@ testing = Test()
 ```python
 '''
 Your writing here
+
+Slack your answers to Ben and he'll check 'em!
 '''
 ```
 
@@ -184,6 +186,13 @@ you create*
 
 
 ```python
+#your code here
+```
+
+
+```python
+#__SOLUTION__ 
+
 data = pd.read_csv('data/PlantGrowth.csv')
 
 f_stat = stats.f_oneway(
@@ -196,8 +205,8 @@ f_3 = f_stat.statistic
 p_3 = f_stat.pvalue
 
 print(f'''
-with f_stat{f_3} and p-value {p_3}, we can reject the null that there aren"t differences in means 
-between the treatment groups at the alpha=.05 significance level
+with f_stat {f_3} and p-value {p_3}, we can reject the null that there aren"t differences in means 
+between the various control and treatment groups at the alpha=.05 significance level
 ''')
 
 tukey_result = pairwise_tukeyhsd(data.weight, data.group)
@@ -205,13 +214,13 @@ tukey_result = pairwise_tukeyhsd(data.weight, data.group)
 pcp_3 = tukey_result.pvalues
 print(tukey_result.summary())
 print
-print('''
-While there are differences between the treatment groups, there aren't differences b/t 
-either of the the treatment groups and the control group
+print("""
+While there are sig. differences between the treatment groups, there aren't sig. differences b/t 
+either of the treatment groups and the control group
 
-We therefore conclude that although the treatments differ from each other,
-the treatments don't differ from no treatment in their effect on plant growth
-''')
+We therefore conclude that although we can reject the null for, and found evidence that, the treatments differ from each other,
+we can't reject the null that the treatments don't differ from no treatment in their effect on plant growth
+""")
 
 #used for tests
 for val in zip([f_3, p_3, pcp_3], ['f_3', 'p_3', 'pcp_3']):
@@ -219,8 +228,8 @@ for val in zip([f_3, p_3, pcp_3], ['f_3', 'p_3', 'pcp_3']):
 ```
 
     
-    with f_stat4.846087862380136 and p-value 0.0159099583256229, we can reject the null that there aren"t differences in means 
-    between the treatment groups at the alpha=.05 significance level
+    with f_stat 4.846087862380136 and p-value 0.0159099583256229, we can reject the null that there aren"t differences in means 
+    between the various control and treatment groups at the alpha=.05 significance level
     
     Multiple Comparison of Means - Tukey HSD, FWER=0.05
     ===================================================
@@ -231,11 +240,11 @@ for val in zip([f_3, p_3, pcp_3], ['f_3', 'p_3', 'pcp_3']):
       trt1   trt2    0.865  0.012  0.1739 1.5561   True
     ---------------------------------------------------
     
-    While there are differences between the treatment groups, there aren't differences b/t 
-    either of the the treatment groups and the control group
+    While there are sig. differences between the treatment groups, there aren't sig. differences b/t 
+    either of the treatment groups and the control group
     
-    We therefore conclude that although the treatments differ from each other,
-    the treatments don't differ from no treatment in their effect on plant growth
+    We therefore conclude that although we can reject the null for, and found evidence that, the treatments differ from each other,
+    we can't reject the null that the treatments don't differ from no treatment in their effect on plant growth
     
 
 
@@ -262,7 +271,7 @@ testing.run_test(pcp_3, 'pcp_3')
 
 ## BONUS CONCEPTUAL QUESTION
 
-Why are the p-values in the Tukey HSD output "adjusted"?  What does Tukey adjust for?
+Why are the p-values in the Tukey HSD output "adjusted"?  What does the Tukey code adjust for?
 
 *Hint: it's the same reason we do ANOVA in the first place and not just a bunch of t-tests*
 
@@ -270,6 +279,8 @@ Why are the p-values in the Tukey HSD output "adjusted"?  What does Tukey adjust
 ```python
 '''
 Your answer here
+
+Check solution branch for answer
 '''
 ```
 
